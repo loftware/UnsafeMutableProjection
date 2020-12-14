@@ -6,7 +6,7 @@ value without inducing CoW.
 A “mutable projection” is a copy of the value, or part of the value, in a
 different form that can be mutated in-place (e.g. via `mutating` method calls or
 being passed `inout`); when the projection is mutated, the changes are reflected
-in the original value.  For example:
+in the original value.  For example, starting with this type:
 
 ```swift
 /// A type that can be mutably projected as a related type.
@@ -16,7 +16,12 @@ struct ProjectableWithStringTag {
 
   /// Creates an instance with the given stored properties.
   init(tag: Int, content: [Int]) { (self.tag, self.content) = (tag, content) }
+}
+```
 
+We can add support for mutably projecting it as a similar type:
+```swift
+extension ProjectableWithStringTag {
   /// A version of `Self` with its `tag` represented as a string.
   struct StringTagged {
     /// Creates an instance corresponding to `x`.
@@ -33,7 +38,6 @@ struct ProjectableWithStringTag {
   init(_ s: StringTagged) {
     (tag, content) = (Int(s.tag)!, s.content)
   }
-  
   
   /// A mutable projection of `self` as `StringTagged`
   var stringTagged: StringTagged {
