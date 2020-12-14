@@ -64,10 +64,15 @@ struct ProjectsWithUnsafeMutableProjection {
     set { (tag, content) = (Int(newValue.tag)!, newValue.content)}
     _modify {
       var (myAddress, projection) = unsafeMutableProjection(destroying: &self) { $0.stringTagged }
+      #if !os(Windows)
       defer {
         myAddress.initialize(to: Self(tag: Int(projection.tag)!, content: projection.content))
       }
+      #endif
       yield &projection
+      #if os(Windows)
+      myAddress.initialize(to: Self(tag: Int(projection.tag)!, content: projection.content))
+      #endif
     }
   }
 }
@@ -150,10 +155,16 @@ struct ProjectableWithStringTag {
       var (myAddress, projection) 
         = unsafeMutableProjection(destroying: &self) { StringTagged($0) }
       
+      #if !os(Windows)
       // `self` was just destroyed! Be sure to re-initialize before exiting.
       defer { myAddress.initialize(to: Self(projection)) }
+      #endif
       
       yield &projection
+      
+      #if os(Windows)
+      myAddress.initialize(to: Self(projection))
+      #endif
     }
   }
 }
