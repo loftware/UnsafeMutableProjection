@@ -1,4 +1,4 @@
-# `func unsafeMutableProjection(destroying:_:)`
+# `unsafeMutableProjection(destroying:_:)`
 
 One function that can help you efficiently create a “mutable projection” of a
 value without inducing CoW.
