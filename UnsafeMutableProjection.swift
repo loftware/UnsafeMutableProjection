@@ -16,7 +16,7 @@
 ///     }
 ///
 public func unsafeMutableProjection<T, U>(
-  destroying source: UnsafeMutablePointer<T>, transform: (T)->U
+  destroying source: UnsafeMutablePointer<T>, _ transform: (T)->U
 ) -> (address: UnsafeMutablePointer<T>, value: U) {
   return (source, transform(source.move()))
 }

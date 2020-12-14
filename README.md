@@ -1,4 +1,4 @@
-# `func unsafeMutableProjection(destroying:transform)`
+# `func unsafeMutableProjection(destroying:_:)`
 
 One function that can help you efficiently create a “mutable projection” of a
 value without inducing CoW.
@@ -6,10 +6,10 @@ value without inducing CoW.
 A “mutable projection” is a copy of the value, or part of the value, in a
 different form that can be mutated in-place (e.g. via `mutating` method calls or
 being passed `inout`); when the projection is mutated, the changes are reflected
-in the original value.
+in the original value.  For example:
 
 ```swift
-/// A type that demonstrates mutable projection.
+/// A type that can be mutably projected as a related type.
 struct ProjectableWithStringTag {
   var tag: Int
   var content: [Int]
